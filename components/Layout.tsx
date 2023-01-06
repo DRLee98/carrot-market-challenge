@@ -2,7 +2,7 @@ import { publicPath } from "@libs/client/constants";
 import useMe from "@libs/client/useMe";
 import useMutation from "@libs/client/useMutation";
 import { cls } from "@libs/client/utils";
-import { Tweet } from "@prisma/client";
+import { Tweet, User } from "@prisma/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { TweetsResponse } from "pages";
@@ -48,7 +48,12 @@ interface TweetResponse {
 
 export default ({ children }: ILayout) => {
   const router = useRouter();
+  const [logInUser, setLogInUser] = useState<User>();
   const { user } = useMe(!publicPath.includes(router.route));
+
+  useEffect(() => {
+    if (user) setLogInUser(user);
+  }, [user]);
 
   const navItemStyle = (path?: string) =>
     cls(
@@ -81,6 +86,7 @@ export default ({ children }: ILayout) => {
   const closeFormFn = () => setOpenForm(false);
 
   const addImageKey = (url: string) => {
+    if (!url) return;
     const key = new Date().getTime().toString();
     setImageKeys((prev) => (prev.length < 4 ? [...prev, { key, url }] : prev));
     setValue("url", "");
@@ -128,25 +134,32 @@ export default ({ children }: ILayout) => {
 
   useEffect(() => {
     if (logOutData?.ok) {
-      router.reload();
+      mutate("/api/user/me", undefined);
+      setLogInUser(undefined);
     }
   }, [logOutData, router]);
   // 로그아웃 관련 코드 끝
 
   return (
     <div className="h-screen flex justify-center">
-      {user && (
+      {!publicPath.includes(router.route) && (
         <>
           <nav className="h-full w-20 bg-gray-50 flex flex-col justify-between lg:w-52 transition-all">
             <div className="w-12 mx-auto px-0 lg:mx-0 lg:px-8 lg:w-full mt-4 flex flex-col gap-4">
-              <Link href={`/user/${user.id}`}>
-                <a className="rounded-full ring-sky-200 ring-0 ring-offset-4 hover:ring transition-all flex items-center gap-4 overflow-hidden">
-                  <Avatar id={user.id} image={user.avatar} name={user.name} />
-                  <span className="font-bold lg:inline whitespace-nowrap">
-                    내 프로필
-                  </span>
-                </a>
-              </Link>
+              {logInUser && (
+                <Link href={`/user/${logInUser.id}`}>
+                  <a className="rounded-full ring-sky-200 ring-0 ring-offset-4 hover:ring transition-all flex items-center gap-4 overflow-hidden">
+                    <Avatar
+                      id={logInUser.id}
+                      image={logInUser.avatar}
+                      name={logInUser.name}
+                    />
+                    <span className="font-bold lg:inline whitespace-nowrap">
+                      내 프로필
+                    </span>
+                  </a>
+                </Link>
+              )}
               <Link href="/">
                 <a className="group flex items-center overflow-hidden">
                   <div className={navItemStyle("/")}>
@@ -228,7 +241,7 @@ export default ({ children }: ILayout) => {
               </button>
             </div>
           </nav>
-          {openForm && (
+          {openForm && logInUser && (
             <div className="z-10 fixed w-screen h-screen bg-gray-300/50 flex items-center justify-center">
               <div className=" w-full max-w-xl h-96 flex flex-col bg-white rounded-2xl p-8">
                 <button
@@ -251,9 +264,15 @@ export default ({ children }: ILayout) => {
                   </svg>
                 </button>
                 <div className="flex gap-4 h-full">
-                  <Avatar id={user.id} image={user.avatar} name={user.name} />
+                  <Avatar
+                    id={logInUser.id}
+                    image={logInUser.avatar}
+                    name={logInUser.name}
+                  />
                   <div className="flex flex-col w-full h-full">
-                    <span className="capitalize font-bold">{user.name}</span>
+                    <span className="capitalize font-bold">
+                      {logInUser.name}
+                    </span>
                     <form
                       onSubmit={handleSubmit(onValid)}
                       className="mt-4 h-full flex flex-col gap-6 justify-between"
@@ -370,7 +389,7 @@ export default ({ children }: ILayout) => {
                         </div>
                         <Button
                           text="작성하기"
-                          disabled={!isValid}
+                          disabled={!isValid || !watch("content")}
                           loading={loading}
                         />
                       </div>
