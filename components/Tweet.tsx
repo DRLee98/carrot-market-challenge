@@ -131,7 +131,7 @@ export default React.memo(
                     {files.map(({ url }, i) => (
                       <li
                         key={`tweet_image_${id}_${i}`}
-                        className="flex items-center justify-center rounded-xl bg-black/95 overflow-hidden"
+                        className="flex items-center justify-center rounded-xl overflow-hidden"
                       >
                         <img src={url} className="w-full" />
                       </li>

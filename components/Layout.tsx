@@ -229,7 +229,7 @@ export default ({ children }: ILayout) => {
             </div>
           </nav>
           {openForm && (
-            <div className="fixed w-screen h-screen bg-gray-300/50 flex items-center justify-center">
+            <div className="z-10 fixed w-screen h-screen bg-gray-300/50 flex items-center justify-center">
               <div className=" w-full max-w-xl h-96 flex flex-col bg-white rounded-2xl p-8">
                 <button
                   onClick={closeFormFn}
