@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  createAt  DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
+  email String @unique
+  password String
+  name String
+  bio String?
+  avatar String?
+  tweets Tweet[]
+  comments Comment[]
+  likeTweets LikeTweet[]
+  likeComments LikeComment[]
+}
+
+
+model Tweet {
+  id        Int       @id @default(autoincrement())
+  createAt  DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
+  content String
+  files File[]
+  author    User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  Int
+  comments Comment[]
+  likes LikeTweet[]
+}
+
+model LikeTweet {
+  id        Int       @id @default(autoincrement())
+  createAt  DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  Int
+  tweet Tweet @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+  tweetId Int
+}
+
+
+model Comment {
+  id        Int       @id @default(autoincrement())
+  createAt  DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
+  text String
+  file String?
+  author    User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  Int
+  tweet Tweet @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+  tweetId Int
+  likes LikeComment[]
+}
+
+model LikeComment {
+  id        Int       @id @default(autoincrement())
+  createAt  DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  Int
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId Int
+}
+
+
+model File {
+  id        Int       @id @default(autoincrement())
+  createAt  DateTime  @default(now())
+  updateAt  DateTime  @updatedAt
+  url String
+  tweet Tweet @relation(fields: [tweetId], references: [id], onDelete: Cascade)
+  tweetId Int
+}

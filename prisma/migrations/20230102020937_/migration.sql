@@ -1,0 +1,69 @@
+-- CreateTable
+CREATE TABLE "User" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updateAt" DATETIME NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "bio" TEXT,
+    "avatar" TEXT
+);
+
+-- CreateTable
+CREATE TABLE "Tweet" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updateAt" DATETIME NOT NULL,
+    "content" TEXT NOT NULL,
+    "authorId" INTEGER NOT NULL,
+    CONSTRAINT "Tweet_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "LikeTweet" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updateAt" DATETIME NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "tweetId" INTEGER NOT NULL,
+    CONSTRAINT "LikeTweet_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "LikeTweet_tweetId_fkey" FOREIGN KEY ("tweetId") REFERENCES "Tweet" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "Comment" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updateAt" DATETIME NOT NULL,
+    "text" TEXT NOT NULL,
+    "file" TEXT,
+    "authorId" INTEGER NOT NULL,
+    "tweetId" INTEGER NOT NULL,
+    CONSTRAINT "Comment_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Comment_tweetId_fkey" FOREIGN KEY ("tweetId") REFERENCES "Tweet" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "LikeComment" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updateAt" DATETIME NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "commentId" INTEGER NOT NULL,
+    CONSTRAINT "LikeComment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "LikeComment_commentId_fkey" FOREIGN KEY ("commentId") REFERENCES "Comment" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "File" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "createAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updateAt" DATETIME NOT NULL,
+    "url" TEXT NOT NULL,
+    "tweetId" INTEGER NOT NULL,
+    CONSTRAINT "File_tweetId_fkey" FOREIGN KEY ("tweetId") REFERENCES "Tweet" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
