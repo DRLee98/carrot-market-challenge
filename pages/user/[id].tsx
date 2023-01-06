@@ -78,7 +78,12 @@ export default () => {
       {data?.ok && (
         <div className="px-6 flex flex-col gap-2">
           <div className="flex items-center gap-4">
-            <Avatar name={data.user.name} image={data.user.avatar} size="xl" />
+            <Avatar
+              id={data.user.id}
+              name={data.user.name}
+              image={data.user.avatar}
+              size="xl"
+            />
             <div className="flex flex-col w-full">
               <div className="w-full flex items-center justify-between">
                 <strong className="text-2xl">{data.user.name}</strong>

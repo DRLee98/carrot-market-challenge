@@ -85,7 +85,7 @@ export default React.memo(
               onClick={goUserDetail}
               className="rounded-full ring-sky-200 ring-0 ring-offset-4 hover:ring transition-shadow"
             >
-              <Avatar name={author.name} image={author.avatar} />
+              <Avatar id={author.id} name={author.name} image={author.avatar} />
             </button>
             <div className="w-full">
               <div className="flex gap-2 items-center w-full">

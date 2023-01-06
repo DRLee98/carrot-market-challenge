@@ -141,7 +141,7 @@ export default ({ children }: ILayout) => {
             <div className="w-12 mx-auto px-0 lg:mx-0 lg:px-8 lg:w-full mt-4 flex flex-col gap-4">
               <Link href={`/user/${user.id}`}>
                 <a className="rounded-full ring-sky-200 ring-0 ring-offset-4 hover:ring transition-all flex items-center gap-4 overflow-hidden">
-                  <Avatar image={user.avatar} name={user.name} />
+                  <Avatar id={user.id} image={user.avatar} name={user.name} />
                   <span className="font-bold lg:inline whitespace-nowrap">
                     내 프로필
                   </span>
@@ -251,7 +251,7 @@ export default ({ children }: ILayout) => {
                   </svg>
                 </button>
                 <div className="flex gap-4 h-full">
-                  <Avatar image={user.avatar} name={user.name} />
+                  <Avatar id={user.id} image={user.avatar} name={user.name} />
                   <div className="flex flex-col w-full h-full">
                     <span className="capitalize font-bold">{user.name}</span>
                     <form

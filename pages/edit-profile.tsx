@@ -27,7 +27,7 @@ export default () => {
     setValue,
     handleSubmit,
     watch,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<IForm>({
     mode: "onChange",
   });
@@ -68,6 +68,7 @@ export default () => {
       >
         <div className="flex gap-6 items-center">
           <Avatar
+            id={user?.id || 0}
             name={watch("name") || ""}
             image={!Boolean(errors.avatar) ? watch("avatar") : null}
             size="xl"

@@ -1,12 +1,13 @@
 import { cls } from "@libs/client/utils";
 
 interface IAvatar {
+  id: number;
   size?: "md" | "lg" | "xl";
   image: string | null;
   name: string;
 }
 
-export default ({ size = "md", image, name }: IAvatar) => {
+export default ({ id, size = "md", image, name }: IAvatar) => {
   const getFirstLatter = () =>
     name.length > 0 ? name.slice(0, 1).toUpperCase() : "";
   const getDefaultStyle = () => {
@@ -20,12 +21,48 @@ export default ({ size = "md", image, name }: IAvatar) => {
     }
   };
 
+  const getAvatarBgColor = (id: number) => {
+    const colors = [
+      "red",
+      "orange",
+      "amber",
+      "yellow",
+      "lime",
+      "green",
+      "emerald",
+      "teal",
+      "cyan",
+      "sky",
+      "blue",
+      "indigo",
+      "stone",
+      "violet",
+      "netural",
+      "purple",
+      "zinc",
+      "fuchsia",
+      "gray",
+      "pink",
+      "slate",
+      "rose",
+    ];
+    const colorValue = [50, 900, 200, 700, 100, 600, 500, 300, 800, 400];
+    const fromColor = `from-${colors[(id % colors.length) - 1]}-${
+      colorValue[(id % colorValue.length) - 1]
+    }`;
+    const toColor = `to-${colors[colors.length - (id % colors.length)]}-${
+      colorValue[colorValue.length - (id % colorValue.length)]
+    }`;
+    return `${fromColor} ${toColor}`;
+  };
+
   return image ? (
     <img className={getDefaultStyle()} src={image} />
   ) : (
     <div
       className={cls(
-        "flex items-center justify-center bg-gradient-to-b from-purple-500 to-pink-500 text-white text-center font-bold",
+        "flex items-center justify-center bg-gradient-to-b text-white text-center font-bold",
+        getAvatarBgColor(id),
         getDefaultStyle()
       )}
     >
