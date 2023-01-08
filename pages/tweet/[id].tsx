@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import { Comment as PrismaComment, Tweet, User } from "@prisma/client";
 import Avatar from "@components/Avatar";
-import { cls, getDateText, getImageGrid } from "@libs/client/utils";
+import { cls, getDateText } from "@libs/client/utils";
 import useMutation from "@libs/client/useMutation";
 import { useForm } from "react-hook-form";
 import Textarea from "@components/Textarea";
@@ -13,6 +13,7 @@ import Comment from "@components/Comment";
 import TitleBox from "@components/TitleBox";
 import DeletePopup from "@components/DeletePopup";
 import Link from "next/link";
+import Images from "@components/Images";
 
 type TUser = Pick<User, "id" | "name" | "avatar" | "email">;
 
@@ -275,21 +276,7 @@ export default () => {
                 {data.tweet.content}
               </p>
               {data.tweet.files.length > 0 && (
-                <ul
-                  className={cls(
-                    "my-6 rounded-xl",
-                    getImageGrid(data.tweet.files.length)
-                  )}
-                >
-                  {data.tweet.files.map(({ url }, i) => (
-                    <li
-                      key={`tweet_image_${data.tweet.id}_${i}`}
-                      className="flex items-center justify-center rounded-xl overflow-hidden"
-                    >
-                      <img src={url} className="w-full" />
-                    </li>
-                  ))}
-                </ul>
+                <Images urls={data.tweet.files} />
               )}
               <span className="text-gray-500 text-sm">
                 {getDateText(data.tweet.updateAt)}

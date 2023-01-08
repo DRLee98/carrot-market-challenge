@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import Avatar from "./Avatar";
 import CommentAndLike from "./CommentAndLike";
 import DeletePopup from "./DeletePopup";
+import Images from "./Images";
 
 export interface TweetWithAuthorAndCount extends Tweet {
   files: {

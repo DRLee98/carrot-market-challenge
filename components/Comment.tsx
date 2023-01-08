@@ -4,6 +4,7 @@ import { Comment, User } from "@prisma/client";
 import { useEffect, useState } from "react";
 import Avatar from "@components/Avatar";
 import DeletePopup from "@components/DeletePopup";
+import Images from "./Images";
 
 interface CommentWithUserAndLikes
   extends Pick<Comment, "id" | "text" | "file" | "createAt"> {
@@ -142,7 +143,7 @@ export default ({
             )}
           </button>
         </div>
-        {file && <img src={file} className="rounded" />}
+        {file && <Images urls={[{ url: file }]} />}
         <span className="text-slate-400 text-sm">
           좋아요 수: {likes.length}
         </span>
