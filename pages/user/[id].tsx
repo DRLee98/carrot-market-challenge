@@ -77,17 +77,24 @@ export default () => {
       <TitleBox title={data?.user?.name || ""} back />
       {data?.ok && (
         <div className="px-6 flex flex-col gap-2">
-          <div className="flex items-end gap-4">
-            <Avatar name={data.user.name} image={data.user.avatar} size="xl" />
+          <div className="flex items-center gap-4">
+            <Avatar
+              id={data.user.id}
+              name={data.user.name}
+              image={data.user.avatar}
+              size="xl"
+            />
             <div className="flex flex-col w-full">
-              {user?.id === data.user.id && (
-                <Link href={"/edit-profile"}>
-                  <a className="self-end font-bold border rounded-full py-1 px-4 hover:bg-sky-500 hover:text-white transition">
-                    프로필 수정
-                  </a>
-                </Link>
-              )}
-              <strong className="text-2xl">{data.user.name}</strong>
+              <div className="w-full flex items-center justify-between">
+                <strong className="text-2xl">{data.user.name}</strong>
+                {user?.id === data.user.id && (
+                  <Link href={"/edit-profile"}>
+                    <a className="self-end font-bold border rounded-full py-1 px-4 hover:bg-sky-500 hover:text-white transition">
+                      프로필 수정
+                    </a>
+                  </Link>
+                )}
+              </div>
               <span className="text-gray-500 font-light">
                 {data.user.email}
               </span>
@@ -121,7 +128,7 @@ export default () => {
                 tab === "my" ? "border-sky-300" : "border-white"
               )}
             >
-              <span>나의 트윗</span>
+              <span>트윗</span>
             </button>
             <button
               onClick={() => setTab("liked")}
@@ -130,7 +137,7 @@ export default () => {
                 tab === "liked" ? "border-sky-300" : "border-white"
               )}
             >
-              <span>내가 좋아한 트윗</span>
+              <span>좋아한 트윗</span>
             </button>
           </div>
           <ul>

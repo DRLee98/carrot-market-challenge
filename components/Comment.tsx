@@ -4,6 +4,7 @@ import { Comment, User } from "@prisma/client";
 import { useEffect, useState } from "react";
 import Avatar from "@components/Avatar";
 import DeletePopup from "@components/DeletePopup";
+import Images from "./Images";
 
 interface CommentWithUserAndLikes
   extends Pick<Comment, "id" | "text" | "file" | "createAt"> {
@@ -72,7 +73,7 @@ export default ({
       key={`comment_${id}`}
       className="flex gap-2 py-4 border-t first:border-t-0"
     >
-      <Avatar name={author.name} image={author.avatar} />
+      <Avatar id={author.id} name={author.name} image={author.avatar} />
       <div className="flex flex-col gap-2 w-full">
         <div className="flex gap-2 items-center">
           <span className="font-bold capitalize">{author.name}</span>
@@ -142,7 +143,7 @@ export default ({
             )}
           </button>
         </div>
-        {file && <img src={file} className="rounded" />}
+        {file && <Images urls={[{ url: file }]} />}
         <span className="text-slate-400 text-sm">
           좋아요 수: {likes.length}
         </span>

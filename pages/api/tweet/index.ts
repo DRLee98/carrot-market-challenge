@@ -27,7 +27,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       );
       res.json({ ok: true, tweet: { ...tweet, files } });
     } else {
-      res.json({ ok: true, tweet });
+      res.json({ ok: true, tweet: { ...tweet, files: [] } });
     }
   } catch (error) {
     console.log(error);

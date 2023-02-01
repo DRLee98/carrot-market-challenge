@@ -8,6 +8,7 @@ import React, { useEffect, useState } from "react";
 import Avatar from "./Avatar";
 import CommentAndLike from "./CommentAndLike";
 import DeletePopup from "./DeletePopup";
+import Images from "./Images";
 
 export interface TweetWithAuthorAndCount extends Tweet {
   files: {
@@ -85,7 +86,7 @@ export default React.memo(
               onClick={goUserDetail}
               className="rounded-full ring-sky-200 ring-0 ring-offset-4 hover:ring transition-shadow"
             >
-              <Avatar name={author.name} image={author.avatar} />
+              <Avatar id={author.id} name={author.name} image={author.avatar} />
             </button>
             <div className="w-full">
               <div className="flex gap-2 items-center w-full">
@@ -131,7 +132,7 @@ export default React.memo(
                     {files.map(({ url }, i) => (
                       <li
                         key={`tweet_image_${id}_${i}`}
-                        className="flex items-center justify-center rounded-xl bg-black/95 overflow-hidden"
+                        className="flex items-center justify-center rounded-xl overflow-hidden"
                       >
                         <img src={url} className="w-full" />
                       </li>
